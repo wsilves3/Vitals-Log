@@ -1,5 +1,11 @@
+# Final Project Python for Programming for IT class
+# Author: Wendy Silvestre
+# Date: 05/04/2020
+
 from patients import *
 from Measures import *
+
+# TkinterLibrary for GUI
 from tkinter import *
 from tkinter import messagebox
 
@@ -28,10 +34,10 @@ def savevitalsigns():
     messagebox.showinfo("Vital Signs Log","Vital Signs have been saved")
     newvitalssign()
 
-def createCVS():
-    #create CVS file for share with other applications
-    ListofMeasures.createCVS(nameSt.get())
-    messagebox.showinfo("Vital Signs Log","CVS File has been created")
+def createCSV():
+    #create CSV file for share with other applications
+    ListofMeasures.createCSV(nameSt.get())
+    messagebox.showinfo("Vital Signs Log","CSV File has been created")
 
 def createPDF():
     #create a PDF file which we can print
@@ -39,7 +45,7 @@ def createPDF():
     messagebox.showinfo("Vital Signs Log","PDF Report File has been created")
 
 def sendmail():
-    #sending an email to the patient's physician with a CVS file
+    #sending an email to the patient's physician with a CSV file
     ListofMeasures.sendemail(patient)
     messagebox.showinfo("Vital Signs Log","Email was sended to " + patient.phname + " " + patient. phemail)
 
@@ -79,22 +85,23 @@ root=Tk()
 root.title("Vital Signs Log")
 
 # Menu options
-
 appMenu=Menu()
 root.config(menu=appMenu, width=300, heigh=300)
 
 VitalsOptions=Menu(appMenu, tearoff=0)
 VitalsOptions.add_command(label="New Vital Signs", command= newvitalssign)
+appMenu.add_cascade(label="Vital Signs",menu=VitalsOptions)
 
+# This version do not have available the function for create new patients
 PatientsOptions=Menu(appMenu, tearoff=0)
 PatientsOptions.add_command(label="New Patient")
-
-appMenu.add_cascade(label="Vital Signs",menu=VitalsOptions)
 appMenu.add_cascade(label="Patients",menu=PatientsOptions)
 
+# Frame which contains every entry box
 myFrame=Frame()
 myFrame.pack(fill="both", expand=TRUE)
 
+# Entry boxes
 nameSt=StringVar()
 nameentry=Entry(myFrame, textvariable=nameSt)
 nameentry.grid(row=0, column=1, padx=10, pady=10)
@@ -143,14 +150,16 @@ glu.grid(row=7, column=1, padx=10, pady=10)
 glulabel=Label(myFrame, text="Glucose")
 glulabel.grid(row=7, column=0, sticky="e", padx=10, pady=10)
 
+# Frame which contains buttons
 myFrame2=Frame()
 myFrame2.pack(fill="both", expand=TRUE)
 
+# Buttons
 savebuttom=Button(myFrame2, text="Save", command=savevitalsigns)
 savebuttom.grid(row=1, column=0, sticky="e", padx=10, pady=10)
 
-createCVSbuttom=Button(myFrame2, text="New CVS File", command=createCVS)
-createCVSbuttom.grid(row=1, column=1, padx=10, pady=10)
+createCSVbuttom=Button(myFrame2, text="New CSV File", command=createCSV)
+createCSVbuttom.grid(row=1, column=1, padx=10, pady=10)
 
 createPDFbuttom=Button(myFrame2, text="New PDF File", command=createPDF)
 createPDFbuttom.grid(row=1, column=2, padx=10, pady=10)
@@ -162,9 +171,8 @@ sendemailbuttom.grid(row=1, column=3, padx=10, pady=10)
 
 # Start Application
 
-newvitalssign()
-root.bind("<FocusOut>", on_focus_out)
+newvitalssign() #Init Application with a clean screen
+root.bind("<FocusOut>", on_focus_out) # linking on_focus_out event to the main window application
+
+# Start GUI
 root.mainloop()
-
-
-
